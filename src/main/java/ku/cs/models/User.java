@@ -30,7 +30,6 @@ public class User {
         BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), this.password);
         return result.verified;
     }
-
     public String getUsername() {
         return username;
     }
