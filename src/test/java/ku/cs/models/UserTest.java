@@ -4,36 +4,69 @@ import at.favre.lib.crypto.bcrypt.BCrypt;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+
 import static org.junit.jupiter.api.Assertions.*;
 
-class UserTest {
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+import at.favre.lib.crypto.bcrypt.BCrypt;
 
-    @Test
-    @DisplayName("Password should not store in plain text")
-    public void testPasswordIsNotStoreInPlainText() {
-        User user = new User("user01", "plain-p@ssw0rd");
-        String actual = user.getPassword();
-        String unexpected = "plain-p@ssw0rd";
-        assertNotEquals(unexpected, actual);
+public class UserTest {
+
+    private User user;
+
+    @BeforeEach
+    public void setUp() {
+        user = new User("testuser");
     }
 
     @Test
-    @DisplayName("Password should be verified by plain text")
-    public void testPasswordShouldBeVerified() {
-        User user = new User("user01", "plain-p@ssw0rd");
-        boolean actual = user.validatePassword("plain-p@ssw0rd");
-        assertTrue(actual);
+    public void testConstructorWithUsernameOnly() {
+        assertEquals("testuser", user.getUsername());
+        assertNull(user.getPassword()); // Password should be null initially
     }
 
     @Test
-    void testSetPassword(){
-        User user = new User("user01","123");
-        user.setPassword("1234");
-
+    public void testConstructorWithUsernameAndPassword() {
+        user = new User("testuser", "testpassword");
+        assertEquals("testuser", user.getUsername());
+        assertNotNull(user.getPassword()); // Password should be hashed and not null
+        assertTrue(user.validatePassword("testpassword")); // Password should be valid
     }
 
     @Test
-    void testIsUserName(){
+    public void testIsUsername() {
+        assertTrue(user.isUsername("testuser"));
+        assertFalse(user.isUsername("wronguser"));
+    }
 
+    @Test
+    public void testSetPassword() {
+        user.setPassword("newpassword");
+        String hashedPassword = user.getPassword();
+        assertNotNull(hashedPassword);
+        assertNotEquals("newpassword", hashedPassword); // Password should be hashed
+        assertTrue(user.validatePassword("newpassword")); // Password should be valid
+    }
+
+    @Test
+    public void testValidatePassword() {
+        user.setPassword("mypassword");
+        assertTrue(user.validatePassword("mypassword")); // Correct password
+        assertFalse(user.validatePassword("wrongpassword")); // Incorrect password
+    }
+
+    @Test
+    public void testGetUsername() {
+        assertEquals("testuser", user.getUsername());
+    }
+
+    @Test
+    public void testGetPassword() {
+        user.setPassword("testpassword");
+        String hashedPassword = user.getPassword();
+        assertNotNull(hashedPassword);
+        assertNotEquals("testpassword", hashedPassword); // Password should be hashed
     }
 }
