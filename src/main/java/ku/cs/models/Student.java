@@ -68,4 +68,12 @@ public class Student {
                 ", score: " + score +
                 '}';
     }
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Student) {
+            Student other = (Student) obj;
+            return id.equals(other.id) && name.equals(other.name);
+        }
+        return false;
+    }
 }

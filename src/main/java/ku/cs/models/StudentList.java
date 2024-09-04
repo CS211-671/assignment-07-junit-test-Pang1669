@@ -1,12 +1,16 @@
 package ku.cs.models;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class StudentList {
     private ArrayList<Student> students;
 
     public StudentList() {
         students = new ArrayList<>();
+    }
+
+    public StudentList(List<Student> list) {
     }
 
     public void addNewStudent(String id, String name) {
@@ -58,4 +62,12 @@ public class StudentList {
     public ArrayList<Student> getStudents() {
         return students;
     }
+
+    public Student findStudentByObject(Student student) {
+        if (students.contains(student)){
+            return student;
+        }
+        return null;
+    }
+
 }

@@ -2,6 +2,7 @@ module ku.cs {
     requires javafx.controls;
     requires javafx.fxml;
     requires bcrypt;
+    requires org.testng;
 
     opens ku.cs.lab to javafx.fxml;
     exports ku.cs.lab;
